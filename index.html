@@ -4,18 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ballya & Salsa Wedding</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
-      background: #fafafa;
+      background: #fdfdfd;
       color: #333;
       text-align: center;
     }
     .container {
-      padding: 60px 20px;
-      max-width: 500px;
+      padding: 70px 20px;
+      max-width: 520px;
       margin: auto;
     }
     h1 {
@@ -30,12 +32,8 @@
     }
     .names {
       font-family: 'Playfair Display', serif;
-      font-size: 32px;
+      font-size: 34px;
       margin: 30px 0;
-    }
-    .date {
-      font-size: 16px;
-      margin-bottom: 30px;
     }
     .divider {
       width: 60px;
@@ -43,40 +41,91 @@
       background: #ccc;
       margin: 30px auto;
     }
-    .location {
-      font-size: 15px;
+    .section {
+      margin: 50px 0;
+    }
+    .label {
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #999;
+      margin-bottom: 10px;
+    }
+    .text {
+      font-size: 16px;
       line-height: 1.6;
     }
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 26px;
+      border-radius: 30px;
+      background: #111;
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+    }
     .footer {
-      margin-top: 60px;
+      margin-top: 80px;
       font-size: 12px;
       color: #999;
+    }
+    audio {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Undangan Pernikahan</h2>
 
-    <div class="names">
-      Ballya<br>&<br>Salsa
-    </div>
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+</audio>
 
-    <div class="divider"></div>
+<div class="container">
+  <h2>Undangan Pernikahan</h2>
 
-    <div class="date">
-      Sabtu, 12 Oktober 2025
-    </div>
-
-    <div class="location">
-      Gedung Serbaguna Harmoni<br/>
-      Jakarta
-    </div>
-
-    <div class="footer">
-      Merupakan suatu kehormatan & kebahagiaan bagi kami<br/>
-      atas kehadiran Bapak/Ibu/Saudara/i
-    </div>
+  <div class="names">
+    Ballya<br>&<br>Salsa
   </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="label">TANGGAL</div>
+    <div class="text">Sabtu, 31 Januari 2026</div>
+  </div>
+
+  <div class="section">
+    <div class="label">LOKASI</div>
+    <div class="text">
+      Blok M Area<br/>
+      Jakarta Selatan
+    </div>
+    <a class="btn" href="https://maps.google.com/?q=Blok+M+Jakarta" target="_blank">
+      Buka Google Maps
+    </a>
+  </div>
+
+  <div class="section">
+    <div class="label">RSVP</div>
+    <div class="text">
+      Mohon konfirmasi kehadiran Anda
+    </div>
+    <a class="btn" href="https://wa.me/6281234567890?text=Halo%20Ballya%20dan%20Salsa,%20saya%20akan%20hadir." target="_blank">
+      Konfirmasi via WhatsApp
+    </a>
+  </div>
+
+  <div class="footer">
+    Merupakan suatu kehormatan & kebahagiaan bagi kami<br/>
+    atas kehadiran Bapak/Ibu/Saudara/i
+  </div>
+</div>
+
+<script>
+  document.body.addEventListener('click', () => {
+    document.getElementById('music').play();
+  }, { once: true });
+</script>
+
 </body>
 </html>
