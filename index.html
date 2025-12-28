@@ -13,25 +13,37 @@
       font-family: 'Montserrat', sans-serif;
       color: #333;
       text-align: center;
-      background: linear-gradient(180deg, #f8f6f2 0%, #f1f1f1 100%);
+
+      /* BACKGROUND GAMBAR TEMPLATE */
+      background-image: url('https://images.unsplash.com/photo-1526045612212-70caf35c14df');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .overlay {
+      min-height: 100vh;
+      background: rgba(255,255,255,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
     }
 
     .container {
-      padding: 80px 20px;
       max-width: 520px;
-      margin: auto;
-      background: rgba(255,255,255,0.65);
-      backdrop-filter: blur(4px);
-      border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+      background: rgba(255,255,255,0.9);
+      padding: 70px 20px;
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
     }
 
     h2 {
       font-weight: 300;
-      font-size: 18px;
-      margin-bottom: 40px;
+      font-size: 16px;
       letter-spacing: 2px;
       color: #777;
+      margin-bottom: 40px;
     }
 
     .names {
@@ -48,7 +60,7 @@
     }
 
     .section {
-      margin: 50px 0;
+      margin: 45px 0;
     }
 
     .label {
@@ -75,7 +87,7 @@
     }
 
     .footer {
-      margin-top: 70px;
+      margin-top: 60px;
       font-size: 12px;
       color: #888;
     }
@@ -91,44 +103,44 @@
   <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
 </audio>
 
-<div class="container">
-  <h2>UNDANGAN PERNIKAHAN</h2>
+<div class="overlay">
+  <div class="container">
+    <h2>UNDANGAN PERNIKAHAN</h2>
 
-  <div class="names">
-    Ballya<br>&<br>Salsa
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="section">
-    <div class="label">TANGGAL</div>
-    <div class="text">Sabtu, 31 Januari 2026</div>
-  </div>
-
-  <div class="section">
-    <div class="label">LOKASI</div>
-    <div class="text">
-      Blok M Area<br/>
-      Jakarta Selatan
+    <div class="names">
+      Ballya<br>&<br>Salsa
     </div>
-    <a class="btn" href="https://maps.google.com/?q=Blok+M+Jakarta" target="_blank">
-      Google Maps
-    </a>
-  </div>
 
-  <div class="section">
-    <div class="label">RSVP</div>
-    <div class="text">
-      Mohon konfirmasi kehadiran Anda
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="label">TANGGAL</div>
+      <div class="text">Sabtu, 31 Januari 2026</div>
     </div>
-    <a class="btn" href="https://wa.me/6281234567890?text=Halo%20Ballya%20dan%20Salsa,%20saya%20akan%20hadir." target="_blank">
-      Konfirmasi via WhatsApp
-    </a>
-  </div>
 
-  <div class="footer">
-    Merupakan suatu kehormatan & kebahagiaan bagi kami<br/>
-    atas kehadiran Bapak/Ibu/Saudara/i
+    <div class="section">
+      <div class="label">LOKASI</div>
+      <div class="text">
+        Blok M Area<br/>
+        Jakarta Selatan
+      </div>
+      <a class="btn" href="https://maps.google.com/?q=Blok+M+Jakarta" target="_blank">
+        Google Maps
+      </a>
+    </div>
+
+    <div class="section">
+      <div class="label">RSVP</div>
+      <div class="text">Mohon konfirmasi kehadiran Anda</div>
+      <a class="btn" href="https://wa.me/6281234567890" target="_blank">
+        Konfirmasi via WhatsApp
+      </a>
+    </div>
+
+    <div class="footer">
+      Merupakan suatu kehormatan & kebahagiaan bagi kami<br/>
+      atas kehadiran Bapak/Ibu/Saudara/i
+    </div>
   </div>
 </div>
 
