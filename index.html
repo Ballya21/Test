@@ -5,149 +5,123 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ballya & Salsa Wedding</title>
 
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
-      color: #333;
-      text-align: center;
-
-      /* BACKGROUND GAMBAR TEMPLATE */
       background-image: url('https://images.unsplash.com/photo-1526045612212-70caf35c14df');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
+      color: #333;
     }
-
     .overlay {
       min-height: 100vh;
       background: rgba(255,255,255,0.75);
       display: flex;
-      align-items: center;
       justify-content: center;
       padding: 40px 20px;
     }
-
     .container {
       max-width: 520px;
-      background: rgba(255,255,255,0.9);
-      padding: 70px 20px;
+      background: rgba(255,255,255,0.95);
+      padding: 60px 20px;
       border-radius: 18px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      text-align: center;
     }
-
-    h2 {
-      font-weight: 300;
-      font-size: 16px;
-      letter-spacing: 2px;
-      color: #777;
-      margin-bottom: 40px;
-    }
-
     .names {
       font-family: 'Playfair Display', serif;
       font-size: 36px;
       margin: 20px 0;
     }
-
-    .divider {
-      width: 60px;
-      height: 1px;
-      background: #bbb;
-      margin: 30px auto;
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: inherit;
     }
-
-    .section {
-      margin: 45px 0;
-    }
-
-    .label {
-      font-size: 13px;
-      letter-spacing: 2px;
-      color: #999;
-      margin-bottom: 10px;
-    }
-
-    .text {
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
+    textarea { resize: none; height: 90px; }
     .btn {
-      display: inline-block;
-      margin-top: 20px;
+      margin-top: 15px;
       padding: 12px 28px;
       border-radius: 30px;
       background: #2c2c2c;
       color: #fff;
-      text-decoration: none;
+      border: none;
+      cursor: pointer;
+    }
+    .messages {
+      margin-top: 25px;
+      text-align: left;
+    }
+    .message {
+      background: #f4f4f4;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
       font-size: 14px;
-    }
-
-    .footer {
-      margin-top: 60px;
-      font-size: 12px;
-      color: #888;
-    }
-
-    audio {
-      display: none;
     }
   </style>
 </head>
 <body>
 
-<audio id="music" loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
-</audio>
-
 <div class="overlay">
   <div class="container">
-    <h2>UNDANGAN PERNIKAHAN</h2>
+    <div class="names">Ballya & Salsa</div>
 
-    <div class="names">
-      Ballya<br>&<br>Salsa
-    </div>
+    <form id="form">
+      <input name="name" placeholder="Nama" required />
+      <textarea name="message" placeholder="Ucapan & doa" required></textarea>
+      <button class="btn">Kirim</button>
+    </form>
 
-    <div class="divider"></div>
-
-    <div class="section">
-      <div class="label">TANGGAL</div>
-      <div class="text">Sabtu, 31 Januari 2026</div>
-    </div>
-
-    <div class="section">
-      <div class="label">LOKASI</div>
-      <div class="text">
-        Blok M Area<br/>
-        Jakarta Selatan
-      </div>
-      <a class="btn" href="https://maps.google.com/?q=Blok+M+Jakarta" target="_blank">
-        Google Maps
-      </a>
-    </div>
-
-    <div class="section">
-      <div class="label">RSVP</div>
-      <div class="text">Mohon konfirmasi kehadiran Anda</div>
-      <a class="btn" href="https://wa.me/6281398085606" target="_blank">
-        Konfirmasi via WhatsApp
-      </a>
-    </div>
-
-    <div class="footer">
-      Merupakan suatu kehormatan & kebahagiaan bagi kami<br/>
-      atas kehadiran Bapak/Ibu/Saudara/i
-    </div>
+    <div class="messages" id="messages"></div>
   </div>
 </div>
 
 <script>
-  document.body.addEventListener('click', () => {
-    document.getElementById('music').play();
-  }, { once: true });
+  const supabase = supabase.createClient(
+    "https://mnxhweqpdcmjkddcprwx.supabase.co", 
+    "sb_publishable_2lD_q5LsH1QJujWzUR1P0A_Z2Z9Hjwv" // GANTI
+  );
+
+  const form = document.getElementById("form");
+  const messagesDiv = document.getElementById("messages");
+
+  async function loadMessages() {
+    const { data } = await supabase
+      .from("wedding_messages")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    messagesDiv.innerHTML = "";
+    data.forEach(m => {
+      messagesDiv.innerHTML += `
+        <div class="message">
+          <strong>${m.name}</strong><br/>
+          ${m.message}
+        </div>`;
+    });
+  }
+
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const name = form.name.value;
+    const message = form.message.value;
+
+    await supabase.from("wedding_messages").insert([{ name, message }]);
+    form.reset();
+    loadMessages();
+  });
+
+  loadMessages();
 </script>
 
 </body>
