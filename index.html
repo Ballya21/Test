@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 
   <style>
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
@@ -22,10 +24,54 @@
       color: #333;
     }
 
+    /* ================= AMPL0P ================= */
+    .envelope {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .envelope-card {
+      background: #fff;
+      padding: 50px 30px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .envelope-card .to {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 10px;
+    }
+
+    .envelope-card .guest {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      margin-bottom: 30px;
+    }
+
+    .envelope-card button {
+      padding: 12px 30px;
+      border-radius: 30px;
+      border: none;
+      background: #2c2c2c;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ================= UNDANGAN ================= */
     .overlay {
       min-height: 100vh;
       background: rgba(255,255,255,0.75);
-      display: flex;
+      display: none;
       justify-content: center;
       padding: 40px 20px;
     }
@@ -90,14 +136,13 @@
     }
 
     input, textarea {
-  width: 100%;
-  box-sizing: border-box; /* 🔥 INI KUNCI */
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  font-family: inherit;
-}
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-family: inherit;
+    }
 
     textarea {
       resize: none;
@@ -126,11 +171,16 @@
 </head>
 <body>
 
-<audio id="music" loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
-</audio>
+<!-- AMPL0P -->
+<div class="envelope" id="envelope">
+  <div class="envelope-card">
+    <div class="to">Kepada Yth.</div>
+    <div class="guest" id="guestName">Tamu Undangan</div>
+    <button onclick="openInvitation()">Buka Undangan</button>
+  </div>
+</div>
 
-<div class="overlay">
+<div class="overlay" id="invitation">
   <div class="container">
 
     <h2>UNDANGAN PERNIKAHAN</h2>
@@ -141,13 +191,11 @@
 
     <div class="divider"></div>
 
-    <!-- TANGGAL -->
     <div class="section">
       <div class="label">TANGGAL</div>
       <div class="text">Sabtu, 31 Januari 2026</div>
     </div>
 
-    <!-- LOKASI -->
     <div class="section">
       <div class="label">LOKASI</div>
       <div class="text">
@@ -167,7 +215,6 @@
       </a>
     </div>
 
-    <!-- UCAPAN -->
     <div class="section">
       <div class="label">UCAPAN & DOA</div>
 
@@ -188,6 +235,19 @@
 </div>
 
 <script>
+  /* ====== NAMA TAMU ====== */
+  const params = new URLSearchParams(window.location.search);
+  const guest = params.get("to");
+  if (guest) {
+    document.getElementById("guestName").innerText = decodeURIComponent(guest);
+  }
+
+  function openInvitation() {
+    document.getElementById("envelope").style.display = "none";
+    document.getElementById("invitation").style.display = "flex";
+  }
+
+  /* ====== SUPABASE ====== */
   const supabaseClient = supabase.createClient(
     "https://mnxhweqpdcmjkddcprwx.supabase.co",
     "sb_publishable_2lD_q5LsH1QJujWzUR1P0A_Z2Z9Hjwv"
@@ -197,13 +257,11 @@
   const messagesDiv = document.getElementById("messages");
 
   async function loadMessages() {
-    const { data, error } = await supabaseClient
+    const { data } = await supabaseClient
       .from("wedding_messages")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(20);
-
-    if (error) return;
 
     messagesDiv.innerHTML = "";
     data.forEach(m => {
@@ -218,15 +276,11 @@
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const name = form.name.value.trim();
     const message = form.message.value.trim();
     if (!name || !message) return;
 
-    await supabaseClient
-      .from("wedding_messages")
-      .insert([{ name, message }]);
-
+    await supabaseClient.from("wedding_messages").insert([{ name, message }]);
     form.reset();
     loadMessages();
   });
